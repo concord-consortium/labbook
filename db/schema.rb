@@ -20,7 +20,10 @@ ActiveRecord::Schema.define(version: 20130523211450) do
   end
 
   create_table "snapshots", force: true do |t|
-    t.binary   "content",    limit: 10485760
+    t.string   "content_file_name"
+    t.string   "content_content_type"
+    t.integer  "content_file_size"
+    t.datetime "content_updated_at"
     t.text     "comment"
     t.integer  "album_id"
     t.datetime "created_at"
