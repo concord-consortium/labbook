@@ -1,0 +1,9 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Snapshots</h1>
+
+<%= render partial: 'snapshots/snapshot_list_item', collection: @album.snapshots, as: :snapshot, locals: { album: @album } %>
+
+<div>
+  <%= link_to 'Add snapshot', new_album_snapshot_path(@album) %>
+</div>

@@ -1,0 +1,13 @@
+<div class="snapshot">
+  <div class="content">
+    <%= image_tag snapshot.content.url(:medium) %>
+  </div>
+  <div class="comment">
+    <%= snapshot.comment %>
+  </div>
+  <div class="links">
+    <%= link_to 'Album', album %> |
+    <%= link_to 'Edit',   edit_album_snapshot_path(album, snapshot) %> |
+    <%= link_to 'Delete', album_snapshot_path(album, snapshot), method: :delete, confirm: "Really delete snapshot?" %>
+  </div>
+</div>

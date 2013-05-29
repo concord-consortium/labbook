@@ -1,0 +1,39 @@
+<div class="snapshot-form">
+  <%= form_for([@album, @snapshot]) do |f| %>
+    <% if @snapshot.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@snapshot.errors.count, "error") %> prohibited this snapshot from being saved:</h2>
+
+        <ul>
+        <% @snapshot.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if @snapshot.persisted? %>
+      <div>
+        <%= image_tag @snapshot.content.url(:medium) %>
+      </div>
+    <% end %>
+    <% unless @snapshot.content.present? %>
+      <div>
+        Select an image: <%= f.file_field :content %>
+      </div>
+    <% end %>
+
+    <div>
+      <div>
+        Comments:
+      </div>
+      <div>
+        <%= f.text_area :comment %>
+      </div>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+</div>
