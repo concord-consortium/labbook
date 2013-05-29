@@ -13,8 +13,8 @@
 
 ActiveRecord::Schema.define(version: 20130523211450) do
 
-  create_table "albums", force: true do |t|
-    t.string   "title"
+  create_table "albums", id: false, force: true do |t|
+    t.string   "uuid",       limit: 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -28,6 +28,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.0.1'
 
 # Dependencies for the actual app
+gem "uuidtools"
 gem "paperclip"
 
 group :doc do
