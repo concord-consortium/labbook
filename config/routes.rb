@@ -47,7 +47,7 @@ Labbook::Application.routes.draw do
   #     resources :products
   #   end
 
-  resources :albums, only: [:create, :show] do
+  resources :albums, only: [:index, :show] do
     resources :snapshots, except: [:index]
   end
 end

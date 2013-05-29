@@ -11,13 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130523211450) do
+ActiveRecord::Schema.define(version: 20130529215416) do
 
   create_table "albums", id: false, force: true do |t|
     t.string   "uuid",       limit: 36
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "token",      limit: 40
   end
+
+  add_index "albums", ["token"], name: "index_albums_on_token"
 
   create_table "snapshots", force: true do |t|
     t.string   "content_file_name"
