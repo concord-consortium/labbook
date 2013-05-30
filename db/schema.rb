@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20130529215416) do
     t.integer  "content_file_size"
     t.datetime "content_updated_at"
     t.text     "comment"
-    t.integer  "album_id"
+    t.string   "album_id",             limit: 36
     t.datetime "created_at"
     t.datetime "updated_at"
   end
