@@ -14,7 +14,7 @@
 
     <% if @snapshot.persisted? %>
       <div>
-        <%= image_tag @snapshot.content.url(:medium) %>
+        <%= snapshot_image_tag(@snapshot, :medium) %>
       </div>
     <% end %>
     <% unless @snapshot.content.present? %>

@@ -1,6 +1,6 @@
 <div class="snapshot-list-item">
   <div class="content">
-    <%= link_to image_tag(snapshot.content.url(:thumb)), album_snapshot_path(album, snapshot) %>
+    <%= link_to snapshot_image_tag(snapshot, :thumb), album_snapshot_path(album, snapshot) %>
   </div>
   <div class="comment">
     <%= snapshot.comment.gsub("\n", "<br/>").html_safe %>

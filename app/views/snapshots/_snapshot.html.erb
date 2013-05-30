@@ -1,6 +1,6 @@
 <div class="snapshot">
   <div class="content">
-    <%= image_tag snapshot.content.url(:medium) %>
+    <%= snapshot_image_tag(snapshot, :medium) %>
   </div>
   <div class="comment">
     <%= snapshot.comment.gsub("\n", "<br/>").html_safe %>
