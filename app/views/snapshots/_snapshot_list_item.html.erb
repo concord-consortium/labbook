@@ -3,7 +3,7 @@
     <%= link_to image_tag(snapshot.content.url(:thumb)), album_snapshot_path(album, snapshot) %>
   </div>
   <div class="comment">
-    <%= snapshot.comment %>
+    <%= snapshot.comment.gsub("\n", "<br/>").html_safe %>
   </div>
   <div class="links">
     <%= link_to 'Edit',   edit_album_snapshot_path(album, snapshot) %> |

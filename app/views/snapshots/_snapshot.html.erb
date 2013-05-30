@@ -3,7 +3,7 @@
     <%= image_tag snapshot.content.url(:medium) %>
   </div>
   <div class="comment">
-    <%= snapshot.comment %>
+    <%= snapshot.comment.gsub("\n", "<br/>").html_safe %>
   </div>
   <div class="links">
     <%= link_to 'Album', album %> |
