@@ -29,7 +29,8 @@ gem 'jbuilder', '~> 1.0.1'
 
 # Dependencies for the actual app
 gem "uuidtools"
-gem "paperclip"
+gem "paperclip", '~> 3.0'
+gem "aws-sdk"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

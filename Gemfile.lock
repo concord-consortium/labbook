@@ -27,6 +27,10 @@ GEM
       tzinfo (~> 0.3.37)
     arel (4.0.0)
     atomic (1.1.9)
+    aws-sdk (1.11.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
+      uuidtools (~> 2.1)
     builder (3.1.4)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -57,6 +61,7 @@ GEM
     mime-types (1.23)
     minitest (4.7.4)
     multi_json (1.7.3)
+    nokogiri (1.5.9)
     paperclip (3.4.2)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
@@ -132,10 +137,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk
   coffee-rails (~> 4.0.0)
   jbuilder (~> 1.0.1)
   jquery-rails
-  paperclip
+  paperclip (~> 3.0)
   rails (= 4.0.0.rc1)
   rspec-rails (~> 2.13.2)
   sass-rails (~> 4.0.0.rc1)
