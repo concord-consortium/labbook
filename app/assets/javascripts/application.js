@@ -14,4 +14,6 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require turbolinks
+//= require jquery-file-upload/jquery.iframe-transport
+//= require jquery-file-upload/jquery.fileupload
 //= require_tree .

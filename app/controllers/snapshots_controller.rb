@@ -17,7 +17,11 @@ class SnapshotsController < ApplicationController
     @snapshot.album = @album
 
     if @snapshot.save
-      redirect_to [@album, @snapshot], notice: 'Snapshot was successfully created.'
+      if request.xhr?
+        render json: { edit_path: edit_album_snapshot_path(@album, @snapshot.id) }, content_type: 'text/html'
+      else
+        redirect_to [@album, @snapshot], notice: 'Snapshot was successfully created.'
+      end
     else
       render action: 'new'
     end

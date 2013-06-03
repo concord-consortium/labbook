@@ -10,5 +10,6 @@
  *
  *= require_self
  *= require jquery.ui.all
+ *= require jquery-file-upload/jquery.fileupload-ui
  *= require_tree .
  */
