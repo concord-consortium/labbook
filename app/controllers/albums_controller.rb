@@ -8,7 +8,7 @@ class AlbumsController < ApplicationController
         redirect_to new_album_snapshot_path(@album)
       elsif params[:todo] && params[:todo] == "create" && params[:source_url]
         # Create a snapshot from the source url
-        @snapshot = Snapshot.create!(content_remote_url: params[:source_url], comment: "") rescue nil
+        @snapshot = Snapshot.create!(content_remote_url: params[:source_url], comment: "", album: @album) rescue nil
         # Redirect to the edit page for that snapshot
         if @snapshot
           redirect_to edit_album_snapshot_path(@album, @snapshot)
