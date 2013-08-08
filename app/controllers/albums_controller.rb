@@ -4,7 +4,20 @@ class AlbumsController < ApplicationController
   # GET /albums
   def index
     if @album
-      redirect_to @album
+      if params[:todo] && params[:todo] == "new"
+        redirect_to new_album_snapshot_path(@album)
+      elsif params[:todo] && params[:todo] == "create" && params[:source_url]
+        # Create a snapshot from the source url
+        @snapshot = Snapshot.create!(content_remote_url: params[:source_url], comment: "") rescue nil
+        # Redirect to the edit page for that snapshot
+        if @snapshot
+          redirect_to edit_album_snapshot_path(@album, @snapshot)
+        else
+          redirect_to @album
+        end
+      else
+        redirect_to @album
+      end
     else
       render
     end
