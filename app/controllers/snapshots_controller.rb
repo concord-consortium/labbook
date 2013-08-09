@@ -20,7 +20,7 @@ class SnapshotsController < ApplicationController
       if request.xhr?
         render json: { edit_path: edit_album_snapshot_path(@album, @snapshot.id) }, content_type: 'text/html'
       else
-        redirect_to [@album, @snapshot], notice: 'Snapshot was successfully created.'
+        redirect_to [@album, @snapshot]
       end
     else
       render action: 'new'
@@ -34,7 +34,7 @@ class SnapshotsController < ApplicationController
   # PATCH/PUT /snapshots/1
   def update
     if @snapshot.update(snapshot_params)
-      redirect_to [@album, @snapshot], notice: 'Snapshot was successfully updated.'
+      redirect_to [@album, @snapshot]
     else
       render action: 'edit'
     end
@@ -43,7 +43,7 @@ class SnapshotsController < ApplicationController
   # DELETE /snapshots/1
   def destroy
     @snapshot.destroy
-    redirect_to @album, notice: 'Snapshot was successfully destroyed.'
+    redirect_to @album
   end
 
   private
