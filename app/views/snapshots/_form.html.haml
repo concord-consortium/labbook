@@ -9,8 +9,12 @@
           - @snapshot.errors.full_messages.each do |msg|
             %li= msg
     - if @snapshot.persisted?
-      %div
-        = snapshot_image_tag(@snapshot, :medium)
+      .persisted_image{:id => "persisted_image_#{@snapshot.id}"}
+      :javascript
+        $(function() {
+          var drawingTool = new DrawingTool("#persisted_image_#{@snapshot.id}", {width: 500, height: 560});
+          drawingTool.setBackgroundImage("#{@snapshot.content.url(:medium)}");
+        });
     - unless @snapshot.content.present?
       %div
         %span#file-upload-button.fileinput-button
