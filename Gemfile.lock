@@ -45,6 +45,8 @@ GEM
     diff-lcs (1.2.4)
     erubis (2.7.0)
     execjs (2.0.1)
+    haml (4.0.5)
+      tilt
     hike (1.2.3)
     i18n (0.6.9)
     jbuilder (1.0.2)
@@ -150,6 +152,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk
   coffee-rails (~> 4.0.0)
+  haml
   jbuilder (~> 1.0.1)
   jquery-rails
   jquery-ui-rails

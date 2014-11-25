@@ -1,0 +1,11 @@
+.snapshot
+  .content
+    = snapshot_image_tag(snapshot, :medium)
+  .comment
+    = snapshot.comment.gsub("\n", "<br/>").html_safe
+  .links
+    = link_to 'Back to album', album
+    |
+    = link_to 'Edit',   edit_album_snapshot_path(album, snapshot)
+    |
+    = link_to 'Delete', album_snapshot_path(album, snapshot), method: :delete, confirm: "Really delete snapshot?"

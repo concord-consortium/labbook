@@ -1,0 +1,57 @@
+.snapshot-form
+  = form_for([@album, @snapshot]) do |f|
+    - if @snapshot.errors.any?
+      #error_explanation
+        %h2
+          = pluralize(@snapshot.errors.count, "error")
+          prohibited this snapshot from being saved:
+        %ul
+          - @snapshot.errors.full_messages.each do |msg|
+            %li= msg
+    - if @snapshot.persisted?
+      %div
+        = snapshot_image_tag(@snapshot, :medium)
+    - unless @snapshot.content.present?
+      %div
+        %span#file-upload-button.fileinput-button
+          %span Browse...
+          / The file input field used as target for the file upload widget/
+          %input#fileupload{:name => "snapshot[content]", :type => "file"}
+      #progress
+        .bar
+      :javascript
+        $(function () {
+          var url = "#{@snapshot.persisted? ? album_snapshot_path(@album,@snapshot) : album_snapshots_path(@album)}";
+          $('#fileupload').fileupload({
+            url: url,
+            dataType: 'json',
+            add: function (e, data) {
+              $('.fileinput-button').hide();
+              $('.actions input').prop('disabled', true);
+              $('#comments-wrapper .textarea').prop('disabled', true);
+              data.submit();
+            },
+            done: function (e, data) {
+              window.location = data.result.edit_path;
+            },
+            progressall: function (e, data) {
+              var progress = parseInt(data.loaded / data.total * 100, 10);
+              $('#progress .bar').css(
+                'width',
+                progress + '%'
+              );
+            },
+            fileuploadfail: function(e, data) {
+              console.log("Failed!", e, data);
+              $('.actions input').prop('disabled', false);
+              $('#comments-wrapper .textarea').prop('disabled', false);
+            }
+          });
+        });
+    %div
+      %div
+        Comments:
+      #comments-wrapper
+        = f.text_area :comment
+    .actions
+      = f.submit "Save"
