@@ -1,5 +1,5 @@
 .snapshot-form
-  = form_for([@album, @snapshot]) do |f|
+  = form_for([@album, @snapshot], html: { id: "snapshot_form_#{@snapshot.id}"}) do |f|
     - if @snapshot.errors.any?
       #error_explanation
         %h2
@@ -10,10 +10,20 @@
             %li= msg
     - if @snapshot.persisted?
       .persisted_image{:id => "persisted_image_#{@snapshot.id}"}
+      = f.hidden_field :annotation, id: "snapshot_annotation_#{@snapshot.id}"
       :javascript
-        $(function() {
+        $(document).ready(function() {
           var drawingTool = new DrawingTool("#persisted_image_#{@snapshot.id}", {width: 500, height: 560});
           drawingTool.setBackgroundImage("#{@snapshot.content.url(:medium)}");
+          $('#snapshot_form_#{@snapshot.id}').submit(function() {
+            var state = JSON.stringify(drawingTool.save());
+            $('#snapshot_annotation_#{@snapshot.id}').val(state);
+            return true;
+          });
+          var prev_state = $('#snapshot_annotation_#{@snapshot.id}').val();
+          if (prev_state) {
+            drawingTool.load(JSON.parse(prev_state));
+          }
         });
     - unless @snapshot.content.present?
       %div

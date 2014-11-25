@@ -59,6 +59,6 @@ class SnapshotsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def snapshot_params
-      params.require(:snapshot).permit(:comment, :content)
+      params.require(:snapshot).permit(:comment, :content, :annotation)
     end
 end
