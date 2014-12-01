@@ -1,3 +1,4 @@
+= javascript_include_tag SHUTTERBUG_JS
 .snapshot-form
   = form_for([@album, @snapshot], html: { id: "snapshot_form_#{@snapshot.id}"}) do |f|
     - if @snapshot.errors.any?
@@ -11,14 +12,48 @@
     - if @snapshot.persisted?
       .persisted_image{:id => "persisted_image_#{@snapshot.id}"}
       = f.hidden_field :annotation, id: "snapshot_annotation_#{@snapshot.id}"
+      = f.hidden_field :annotated_snapshot_url, id: "annotated_snapshot_url_#{@snapshot.id}"
       :javascript
         $(document).ready(function() {
+          var firstSubmit = true;
           var drawingTool = new DrawingTool("#persisted_image_#{@snapshot.id}", {width: 500, height: 560});
           drawingTool.setBackgroundImage("#{@snapshot.content.url(:medium)}");
           $('#snapshot_form_#{@snapshot.id}').submit(function() {
-            var state = JSON.stringify(drawingTool.save());
-            $('#snapshot_annotation_#{@snapshot.id}').val(state);
-            return true;
+            if (firstSubmit) {
+              var state = JSON.stringify(drawingTool.save());
+              $('#snapshot_annotation_#{@snapshot.id}').val(state);
+              $(function() {
+                var optCallbackFn = function(msg) {
+                  var reg = /img src='([^']*)'/;
+                  var match = reg.exec(msg);
+                  if (match[1] != null) {
+                    var snap_location = match[1];
+                    if (snap_location.indexOf('://') == -1) {
+                      snap_location = window.location.protocol + "//" + window.location.host + snap_location;
+                    }
+                    $("#annotated_snapshot_url_#{@snapshot.id}").val(snap_location);
+                  }
+
+                  firstSubmit = false;
+                  $('#snapshot_form_#{@snapshot.id}').submit();
+                };
+
+                $('#snapshot_submit_#{@snapshot.id}').attr('disabled', 'disabled');
+                $('#snapshot_submit_#{@snapshot.id}').text('Please wait...');
+
+                drawingTool.clearSelection();
+
+                var shutterbug = new Shutterbug("#persisted_image_#{@snapshot.id} .dt-canvas-container", null, optCallbackFn, "persisted_image_#{@snapshot.id}");
+
+                if (shutterbug.useIframeSizeHack) {
+                  shutterbug.useIframeSizeHack(true);
+                }
+                shutterbug.getDomSnapshot();
+              });
+              return false;
+            } else {
+              return true;
+            }
           });
           var prev_state = $('#snapshot_annotation_#{@snapshot.id}').val();
           if (prev_state) {
@@ -68,4 +103,4 @@
       #comments-wrapper
         = f.text_area :comment
     .actions
-      = f.submit "Save"
+      = f.submit "Save", html: { id: "snapshot_submit_#{@snapshot.id}" }

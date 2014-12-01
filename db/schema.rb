@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141125203404) do
+ActiveRecord::Schema.define(version: 20141201120000) do
 
   create_table "albums", id: false, force: true do |t|
     t.string   "uuid",       limit: 36
@@ -28,10 +28,14 @@ ActiveRecord::Schema.define(version: 20141125203404) do
     t.integer  "content_file_size"
     t.datetime "content_updated_at"
     t.text     "comment"
-    t.string   "album_id",             limit: 36
+    t.string   "album_id",                       limit: 36
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "annotation",           limit: 4194304
+    t.text     "annotation",                     limit: 4194304
+    t.string   "annotated_content_file_name"
+    t.string   "annotated_content_content_type"
+    t.integer  "annotated_content_file_size"
+    t.datetime "annotated_content_updated_at"
   end
 
 end

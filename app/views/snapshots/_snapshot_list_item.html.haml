@@ -1,6 +1,6 @@
 .snapshot-list-item
   .content
-    = link_to snapshot_image_tag(snapshot, :thumb), album_snapshot_path(album, snapshot)
+    = link_to annotated_snapshot_image_tag(snapshot, :thumb), album_snapshot_path(album, snapshot)
   .comment
     = snapshot.comment.gsub("\n", "<br/>").html_safe
   .links

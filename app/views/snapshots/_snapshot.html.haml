@@ -1,6 +1,6 @@
 .snapshot
   .content
-    = snapshot_image_tag(snapshot, :medium)
+    = annotated_snapshot_image_tag(snapshot, :medium)
   .comment
     = snapshot.comment.gsub("\n", "<br/>").html_safe
   .links
