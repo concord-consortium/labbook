@@ -39,7 +39,7 @@
                 };
 
                 $('#snapshot_submit_#{@snapshot.id}').attr('disabled', 'disabled');
-                $('#snapshot_submit_#{@snapshot.id}').text('Please wait...');
+                $('#snapshot_submit_#{@snapshot.id}').val('Please wait...');
 
                 drawingTool.clearSelection();
 
@@ -103,4 +103,4 @@
       #comments-wrapper
         = f.text_area :comment
     .actions
-      = f.submit "Save", html: { id: "snapshot_submit_#{@snapshot.id}" }
+      = f.submit "Save", id: "snapshot_submit_#{@snapshot.id}"
