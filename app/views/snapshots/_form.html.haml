@@ -43,7 +43,7 @@
 
                 drawingTool.clearSelection();
 
-                var shutterbug = new Shutterbug("#persisted_image_#{@snapshot.id} .dt-canvas-container", null, optCallbackFn, "persisted_image_#{@snapshot.id}");
+                var shutterbug = new Shutterbug("#persisted_image_#{@snapshot.id} .canvas-container", null, optCallbackFn, "persisted_image_#{@snapshot.id}");
 
                 if (shutterbug.useIframeSizeHack) {
                   shutterbug.useIframeSizeHack(true);
