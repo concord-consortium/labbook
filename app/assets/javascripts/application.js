@@ -16,3 +16,4 @@
 //= require turbolinks
 //= require jquery-file-upload/jquery.iframe-transport
 //= require jquery-file-upload/jquery.fileupload
+//= require_tree .

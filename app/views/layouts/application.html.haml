@@ -3,12 +3,13 @@
   %head
     %title Labbook
     = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+    = stylesheet_link_tag    "/stylesheets/drawing-tool/drawing-tool", media: "all"
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
   %body
     = yield
 
-    = javascript_include_tag "drawing-tool-vendor"
+    = javascript_include_tag "/javascripts/drawing-tool-vendor"
     :javascript
-      window.drawToolJQuery = jQuery.noConflict();
-    = javascript_include_tag "drawing-tool"
+      window.drawToolJQuery = $.noConflict();
+    = javascript_include_tag "/javascripts/drawing-tool"
