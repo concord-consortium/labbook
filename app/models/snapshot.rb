@@ -18,7 +18,7 @@ class Snapshot < ActiveRecord::Base
   end
 
   def annotated_snapshot_url=(url_str)
-    self.annotated_content = URI.parse(url_str)
+    (self.annotated_content = URI.parse(url_str)) rescue nil
     @annotated_snapshot_url = url_str
   end
 end

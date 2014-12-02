@@ -16,10 +16,13 @@
       :javascript
         $(document).ready(function() {
           var firstSubmit = true;
+          var originalData = "";
           var drawingTool = new DrawingTool("#persisted_image_#{@snapshot.id}", {width: 500, height: 560});
-          drawingTool.setBackgroundImage("#{@snapshot.content.url(:medium)}");
+          var drawToolStateHasChanged = function() {
+            return originalData != drawingTool.canvas.toDataURL();
+          };
           $('#snapshot_form_#{@snapshot.id}').submit(function() {
-            if (firstSubmit) {
+            if (firstSubmit && drawToolStateHasChanged()) {
               var state = JSON.stringify(drawingTool.save());
               $('#snapshot_annotation_#{@snapshot.id}').val(state);
               $(function() {
@@ -57,7 +60,10 @@
           });
           var prev_state = $('#snapshot_annotation_#{@snapshot.id}').val();
           if (prev_state) {
-            drawingTool.load(JSON.parse(prev_state));
+            drawingTool.load(JSON.parse(prev_state), function() { originalData = drawingTool.canvas.toDataURL(); });
+          } else {
+            drawingTool.setBackgroundImage("#{@snapshot.content.url(:medium)}");
+            originalData = drawingTool.canvas.toDataURL();
           }
         });
     - unless @snapshot.content.present?
