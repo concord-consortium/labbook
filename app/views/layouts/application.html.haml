@@ -7,7 +7,9 @@
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
   %body
-    = yield
+    #content
+      #inner-content
+        = yield
 
     = javascript_include_tag "/javascripts/drawing-tool-vendor"
     :javascript
