@@ -5,7 +5,7 @@ module ApplicationHelper
     image_tag(url, alt: alt, title: alt)
   end
   def annotated_snapshot_image_tag(snapshot, size=:medium)
-    return snapshot_image_tag(snapshot, size) unless snapshot.annotated_content
+    return snapshot_image_tag(snapshot, size) unless snapshot.annotated_content.original_filename
     url = snapshot.annotated_content.url(size)
     alt = snapshot.annotated_content.original_filename || "missing snapshot"
     image_tag(url, alt: alt, title: alt)
