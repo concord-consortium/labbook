@@ -10,6 +10,8 @@
           - @snapshot.errors.full_messages.each do |msg|
             %li= msg
     - if @snapshot.persisted?
+      .instructions
+        Use the tools on the left to draw on your snapshot. Write your comments in the box below the snapshot and click Save when you are done.
       .persisted_image{:id => "persisted_image_#{@snapshot.id}"}
       = f.hidden_field :annotation, id: "snapshot_annotation_#{@snapshot.id}"
       = f.hidden_field :annotated_snapshot_url, id: "annotated_snapshot_url_#{@snapshot.id}"
