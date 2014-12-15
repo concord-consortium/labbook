@@ -28,11 +28,8 @@
               var state = JSON.stringify(drawingTool.save());
               $('#snapshot_annotation_#{@snapshot.id}').val(state);
               $(function() {
-                var optCallbackFn = function(msg) {
-                  var reg = /img src='([^']*)'/;
-                  var match = reg.exec(msg);
-                  if (match[1] != null) {
-                    var snap_location = match[1];
+                var optCallbackFn = function(snap_location) {
+                  if (snap_location != null) {
                     if (snap_location.indexOf('://') == -1) {
                       snap_location = window.location.protocol + "//" + window.location.host + snap_location;
                     }
@@ -48,12 +45,7 @@
 
                 drawingTool.clearSelection();
 
-                var shutterbug = new Shutterbug("#persisted_image_#{@snapshot.id} .canvas-container", null, optCallbackFn, "persisted_image_#{@snapshot.id}");
-
-                if (shutterbug.useIframeSizeHack) {
-                  shutterbug.useIframeSizeHack(true);
-                }
-                shutterbug.getDomSnapshot();
+                Shutterbug.snapshot("#persisted_image_#{@snapshot.id} .canvas-container", optCallbackFn, {});
               });
               return false;
             } else {
