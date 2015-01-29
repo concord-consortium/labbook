@@ -45,7 +45,7 @@
 
                 drawingTool.clearSelection();
 
-                Shutterbug.snapshot("#persisted_image_#{@snapshot.id} .canvas-container", optCallbackFn, {});
+                Shutterbug.snapshot({ selector: "#persisted_image_#{@snapshot.id} .canvas-container", done: optCallbackFn, server: '#{SHUTTERBUG_SERVER}'});
               });
               return false;
             } else {
