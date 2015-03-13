@@ -48,6 +48,9 @@ Labbook::Application.routes.draw do
   #   end
 
   resources :albums, only: [:index, :show] do
+    member do
+      get 'report'
+    end
     resources :snapshots, except: [:index]
   end
 end

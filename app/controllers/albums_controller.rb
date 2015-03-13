@@ -1,4 +1,6 @@
 class AlbumsController < ApplicationController
+  layout 'report', :only => [:report]
+
   before_action :set_album
 
   # GET /albums
@@ -15,6 +17,8 @@ class AlbumsController < ApplicationController
         else
           redirect_to @album
         end
+      elsif params[:todo] && params[:todo] == "report"
+        redirect_to report_album_path(@album)
       else
         redirect_to @album
       end
@@ -25,6 +29,10 @@ class AlbumsController < ApplicationController
 
   # GET /albums/1
   def show
+  end
+
+  # GET albums/1/report
+  def report
   end
 
   private

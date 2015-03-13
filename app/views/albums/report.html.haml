@@ -1,0 +1,10 @@
+- snapshot_count = @album.snapshots.count
+- @album.snapshots.each_with_index do |snapshot, idx|
+  .snapshot-report-item
+    .report-info
+      = "Snapshot #{idx + 1}/#{snapshot_count}"
+    = annotated_snapshot_image_tag(snapshot)
+    - unless snapshot.comment.blank?
+      %hr
+      .report-comment
+        = snapshot.comment.gsub("\n", "<br/>").html_safe
