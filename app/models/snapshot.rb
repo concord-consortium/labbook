@@ -21,4 +21,12 @@ class Snapshot < ActiveRecord::Base
     (self.annotated_content = URI.parse(url_str)) rescue nil
     @annotated_snapshot_url = url_str
   end
+
+  def dup
+    clone = super
+    # Fix paperclip attachments:
+    clone.content = content
+    clone.annotated_content = annotated_content
+    clone
+  end
 end

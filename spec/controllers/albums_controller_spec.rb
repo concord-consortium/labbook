@@ -157,4 +157,60 @@ describe AlbumsController do
     end
   end
 
+  # Note that this test, in contrast to the ones above, has been manually created and should pass.
+  describe "POST replace_all_snapshots" do
+    let(:snapshot1) { Snapshot.create!(content_file_name: 'test1.png') }
+    let(:snapshot2) { Snapshot.create!(content_file_name: 'test2.png') }
+    let(:snapshot3) { Snapshot.create!(content_file_name: 'test3.png') }
+    let(:source1) { 'source1' }
+    let(:source2) { 'source2' }
+    let(:user_id1) { 'user1' }
+    let(:user_id2) { 'user2' }
+    describe "with valid params" do
+      describe "when both source and destination albums exist" do
+        before do
+          Album.create!(token: Album.token(source1, user_id1), snapshots: [snapshot1, snapshot2])
+          Album.create!(token: Album.token(source2, user_id2), snapshots: [snapshot3])
+        end
+        it "replaces all snapshots of destination album" do
+          post :replace_all_snapshots, {src_source: source1, src_user_id: user_id1,
+                                        dst_source: source2, dst_user_id: user_id2}
+
+          expect(response.status).to eq(200)
+          album2 = Album.find_by(token: Album.token(source2, user_id2))
+          expect(album2.snapshots.count).to eql(2)
+          expect(album2.snapshots.first).not_to eql(snapshot1)
+          expect(album2.snapshots.first.content_file_name).to eql(snapshot1.content_file_name)
+          expect(album2.snapshots.last).not_to eql(snapshot2)
+          expect(album2.snapshots.last.content_file_name).to eql(snapshot2.content_file_name)
+        end
+      end
+
+      describe "when only source album exist" do
+        before do
+          Album.create!(token: Album.token(source1, user_id1), snapshots: [snapshot1, snapshot2])
+        end
+        it "creates a new album and copies all source snapshots" do
+          post :replace_all_snapshots, {src_source: source1, src_user_id: user_id1,
+                                        dst_source: source2, dst_user_id: user_id2}
+
+          expect(response.status).to eq(200)
+          album2 = Album.find_by(token: Album.token(source2, user_id2))
+          expect(album2.snapshots.count).to eql(2)
+          expect(album2.snapshots.first).not_to eql(snapshot1)
+          expect(album2.snapshots.first.content_file_name).to eql(snapshot1.content_file_name)
+          expect(album2.snapshots.last).not_to eql(snapshot2)
+          expect(album2.snapshots.last.content_file_name).to eql(snapshot2.content_file_name)
+        end
+      end
+    end
+
+    describe "with invalid params" do
+      it "returns 400" do
+        post :replace_all_snapshots, {src_source: 'invalid_source', src_user_id: 'invalid_id',
+                                      dst_source: source2, dst_user_id: user_id2}
+        expect(response.status).to eq(400)
+      end
+    end
+  end
 end

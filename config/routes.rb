@@ -48,6 +48,9 @@ Labbook::Application.routes.draw do
   #   end
 
   resources :albums, only: [:index, :show] do
+    collection do
+      post 'replace_all_snapshots'
+    end
     member do
       get 'report'
     end
