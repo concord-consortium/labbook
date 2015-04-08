@@ -7,5 +7,5 @@ end
 if ENV['SHUTTERBUG_SERVER']
   SHUTTERBUG_SERVER = ENV['SHUTTERBUG_SERVER']
 else
-  SHUTTERBUG_SERVER = '//snapshot.concord.org/shutterbug'
+  SHUTTERBUG_SERVER = 'https://snapshot.concord.org/shutterbug'
 end

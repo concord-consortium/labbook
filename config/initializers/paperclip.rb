@@ -5,8 +5,9 @@ if ENV['AWS_BUCKET']
     access_key_id: ENV['AWS_ACCESS_KEY_ID'],
     secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
   }
-  Paperclip::Attachment.default_options[:url] = ":s3_domain_url"
+  Paperclip::Attachment.default_options[:url] = ":s3_path_url" # only path-style works with HTTPS
   Paperclip::Attachment.default_options[:path] = "/snapshots/:hash.:extension"
+  Paperclip::Attachment.default_options[:s3_protocol] = "https"
 else
   Paperclip::Attachment.default_options[:url] = "/snapshots/:hash.:extension"
 end
