@@ -22,3 +22,7 @@
 
 labbook.sublime-workspace
 .idea
+*.zip
+*.crt
+*.csr
+*.key
