@@ -34,8 +34,7 @@
         = f.text_area :comment
       .actions
         = f.submit "Save", class: 'button', id: "snapshot_submit_#{@snapshot.id}"
-        = f.submit "Cancel", class: 'button cancel', id: "snapshot_cancel_#{@snapshot.id}"
-        = link_to 'Back to album', @album, class: "button"
+        = link_to 'Cancel', @album, class: "button"
 
   :javascript
       $(function () {
