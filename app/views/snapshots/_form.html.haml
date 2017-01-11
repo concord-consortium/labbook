@@ -72,6 +72,23 @@
         var drawToolStateHasChanged = function() {
           return originalData != drawingTool.canvas.toDataURL();
         };
+        var phone = iframePhone.getIFrameEndpoint();
+
+        // the drawing tool doesn't expose if the document is dirty but it does send events on undoable and redoable actions
+        // the first attempt at this kept a counter of undo events (decrementing when 'redo:possible' was received) but since
+        // the undo button itself sends a redo:possible event and there is no way to check if there are any other actions
+        // on the undo/redo stack, that counter was removed.  A simple flag is now set when anything undoable happens - this isn't
+        // ideal as if the user uses the undo button back to a "clean" document LARA will still think it is dirty
+        var hasUnsavedState = function (value) {
+          phone.post('interactiveState', value ? {hasUnsavedState: true} : 'nochange');
+        };
+        var listenForDrawingChanges = function() {
+          drawingTool.on('undo:possible', function () {
+            hasUnsavedState(true);
+          })
+        };
+        phone.initialize();
+
         $('#snapshot_form_#{@snapshot.id}').submit(function() {
           if (firstSubmit && drawToolStateHasChanged()) {
             var state = JSON.stringify(drawingTool.save());
@@ -87,6 +104,8 @@
 
                 firstSubmit = false;
                 $('#snapshot_form_#{@snapshot.id}').submit();
+
+                hasUnsavedState(false);
               };
 
               $('#snapshot_submit_#{@snapshot.id}').attr('disabled', 'disabled');
@@ -103,9 +122,10 @@
         });
         var prev_state = $('#snapshot_annotation_#{@snapshot.id}').val();
         if (prev_state) {
-          drawingTool.load(JSON.parse(prev_state), function() { originalData = drawingTool.canvas.toDataURL(); });
+          drawingTool.load(JSON.parse(prev_state), function() { originalData = drawingTool.canvas.toDataURL(); listenForDrawingChanges() });
         } else {
-          drawingTool.setBackgroundImage("#{@snapshot.content.url(:medium)}");
+          drawingTool.setBackgroundImage("#{@snapshot.content.url(:medium)}", undefined, listenForDrawingChanges);
           originalData = drawingTool.canvas.toDataURL();
         }
+
       });
