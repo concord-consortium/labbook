@@ -8,12 +8,12 @@
         = f.hidden_field :annotated_snapshot_url, id: "annotated_snapshot_url_#{@snapshot.id}"
 
       - unless @snapshot.content.present?
-        %div
+        %div{:style => "min-width: 150px"}
           %span#file-upload-button.fileinput-button
             %span Browse...
             / The file input field used as target for the file upload widget/
             %input#fileupload{:name => "snapshot[content]", :type => "file"}
-        #progress
+        #progress{:style => "margin-top: 10px"}
           .bar
     .right
       - if @snapshot.persisted?
