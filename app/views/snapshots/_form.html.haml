@@ -34,7 +34,7 @@
         = f.text_area :comment
       .actions
         = f.submit "Save", class: 'button', id: "snapshot_submit_#{@snapshot.id}"
-        = link_to 'Cancel', @album, class: "button"
+        = link_to 'Cancel', @album, class: "button", id: "snapshot_cancel_#{@snapshot.id}"
 
   :javascript
       $(function () {
@@ -72,6 +72,62 @@
         var drawToolStateHasChanged = function() {
           return originalData != drawingTool.canvas.toDataURL();
         };
+        var phone = iframePhone.getIFrameEndpoint();
+
+        // the drawing tool doesn't expose if the document is dirty but it does send events on undoable and redoable actions
+        // the first attempt at this kept a counter of undo events (decrementing when 'redo:possible' was received) but since
+        // the undo button itself sends a redo:possible event and there is no way to check if there are any other actions
+        // on the undo/redo stack, that counter was removed.  A simple flag is now set when anything undoable happens - this isn't
+        // ideal as if the user uses the undo button back to a "clean" document LARA will still think it is dirty
+        var listenForDrawingChanges = function() {
+          drawingTool.on('undo:possible', function () {
+            canClose = false;
+          })
+        };
+        var canClose = true;
+        var checkIfCanCloseFrom = function (from) {
+          if (canClose) {
+            phone.post('connected', false);
+            if (from === 'phoneHandler') {
+              phone.post('close')
+            }
+            return true;
+          }
+
+          $('<div style="padding: 10px; max-width: 500px; word-wrap: break-word;">You have unsaved changes.  Are you sure you want to close?</div>').dialog({
+              draggable: false,
+              modal: true,
+              resizable: false,
+              width: 'auto',
+              title: 'Confirm',
+              minHeight: 75,
+              buttons: {
+                Yes: function () {
+                  canClose = true;
+                  phone.post('connected', false);
+                  if (from === 'phoneHandler') {
+                    phone.post('close');
+                  }
+                  else if (from === 'cancelButton') {
+                    // using .click() on the element doesn't work here so just force the link
+                    window.location = $('#snapshot_cancel_#{@snapshot.id}')[0].href;
+                  }
+                  $(this).dialog('destroy');
+                },
+                No: function () {
+                  $(this).dialog('destroy');
+                }
+              }
+            });
+
+          return false;
+        };
+        phone.addListener('canClose', function () {
+          checkIfCanCloseFrom('phoneHandler');
+        });
+        phone.initialize();
+        phone.post('connected', true);
+
         $('#snapshot_form_#{@snapshot.id}').submit(function() {
           if (firstSubmit && drawToolStateHasChanged()) {
             var state = JSON.stringify(drawingTool.save());
@@ -86,6 +142,7 @@
                 }
 
                 firstSubmit = false;
+                canClose = true;
                 $('#snapshot_form_#{@snapshot.id}').submit();
               };
 
@@ -98,14 +155,19 @@
             });
             return false;
           } else {
-            return true;
+            return checkIfCanCloseFrom('secondSubmit');
           }
         });
+
+        $('#snapshot_cancel_#{@snapshot.id}').click(function() {
+          return checkIfCanCloseFrom('cancelButton');
+        });
+
         var prev_state = $('#snapshot_annotation_#{@snapshot.id}').val();
         if (prev_state) {
-          drawingTool.load(JSON.parse(prev_state), function() { originalData = drawingTool.canvas.toDataURL(); });
+          drawingTool.load(JSON.parse(prev_state), function() { originalData = drawingTool.canvas.toDataURL(); listenForDrawingChanges() });
         } else {
-          drawingTool.setBackgroundImage("#{@snapshot.content.url(:medium)}");
+          drawingTool.setBackgroundImage("#{@snapshot.content.url(:medium)}", undefined, listenForDrawingChanges);
           originalData = drawingTool.canvas.toDataURL();
         }
       });
