@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/concord-consortium/secure-samesite-cookies
+  revision: c4a27ce22c31273d6f78f32d48a6f8677e7fe281
+  tag: v1.0.1
+  specs:
+    rack-secure_samesite_cookies (1.0.1)
+      rack (>= 1.4.7)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -159,6 +167,7 @@ DEPENDENCIES
   newrelic_rpm
   paperclip (~> 3.0)
   pg
+  rack-secure_samesite_cookies!
   rails (~> 4.0.0)
   rails_12factor
   rspec-rails (~> 2.13.2)
