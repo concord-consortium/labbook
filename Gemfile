@@ -63,4 +63,4 @@ gem 'unicorn'
 # gem 'debugger', group: [:development, :test]
 
 # add samesite cookie fix
-gem 'rack-secure_samesite_cookies', {:git => 'git://github.com/concord-consortium/secure-samesite-cookies', :tag => 'v1.0.1'}
+gem 'rack-secure_samesite_cookies', {:git => 'git://github.com/concord-consortium/secure-samesite-cookies', :tag => 'v1.0.2'}
