@@ -1,4 +1,4 @@
-ruby '2.1.2'
+ruby '2.2.10'
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -35,18 +35,13 @@ gem 'jbuilder', '~> 1.0.1'
 
 # Dependencies for the actual app
 gem "uuidtools"
-gem "paperclip", '~> 3.0'
-gem "aws-sdk"
+gem "paperclip", '~> 3.5.4'
+gem "aws-sdk", '~> 1'
 gem 'haml'
-
-group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
-end
 
 group :development, :test do
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
+  gem 'sqlite3', '~>1.4.2'
   gem 'rspec-rails', '~> 2.13.2'
 end
 
@@ -54,7 +49,7 @@ end
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Use unicorn as the app server
-gem 'unicorn'
+gem 'unicorn', '~>4.8.3'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
